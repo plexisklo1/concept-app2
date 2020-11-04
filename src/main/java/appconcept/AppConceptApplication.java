@@ -1,5 +1,6 @@
 package appconcept;
 
+import java.beans.PropertyVetoException;
 import java.util.Properties;
 
 import javax.sql.DataSource;
@@ -26,6 +27,7 @@ import appconcept.dao.Team;
 @PropertySource("classpath:db.prop")
 public class AppConceptApplication implements WebMvcConfigurer {
 
+	
 	@Autowired
 	private Environment env;
 	
@@ -45,14 +47,12 @@ public class AppConceptApplication implements WebMvcConfigurer {
 	public DataSource dataSource() {
 		ComboPooledDataSource source = new ComboPooledDataSource();
 		try {
-		source.setDriverClass(env.getProperty("hibernate.connection.driver_class"));
-		source.setContextClassLoaderSource(env.getProperty("hibernate.current_session_context_class"));
-		System.out.println("data source try block");
-		}
-		catch (Exception e) {
+			source.setDriverClass(env.getProperty("hibernate.connection.driver_class"));
+			source.setContextClassLoaderSource(env.getProperty("hibernate.current_session_context_class"));
+		} catch (PropertyVetoException e) {
 			e.printStackTrace();
+			System.out.println("DataSource try block exception");
 		}
-		
 		source.setUser(env.getProperty("hibernate.connection.username"));
 		source.setPassword(env.getProperty("hibernate.connection.password"));
 		source.setJdbcUrl(env.getProperty("hibernate.connection.url"));
@@ -62,7 +62,6 @@ public class AppConceptApplication implements WebMvcConfigurer {
 		source.setMaxPoolSize(Integer.parseInt(env.getProperty("hibernate.connection.maxPoolSize")));
 		System.out.println("data source created");
 		return source;
-		
 	}
 	
 	@Bean
@@ -78,12 +77,9 @@ public class AppConceptApplication implements WebMvcConfigurer {
 		return factory;
 	}
 
-
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		registry.addResourceHandler("/css/**").addResourceLocations("/css/");
 	}
-	
-	
 
 }

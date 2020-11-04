@@ -10,8 +10,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 @Table(name="details")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Detail {
 
 	@Id
@@ -25,6 +29,7 @@ public class Detail {
 	@Column(name="address")
 	private String address;
 	
+	@JsonIgnore
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="employee_id")
 	private Employee employee;
