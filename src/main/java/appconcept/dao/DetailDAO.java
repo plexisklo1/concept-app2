@@ -18,7 +18,7 @@ public class DetailDAO {
 		session.beginTransaction();
 		Query<Detail> query = session.createQuery("FROM Detail det WHERE det.employee=:emp", Detail.class);
 		query.setParameter("emp", emp);
-		Detail detail = query.getSingleResult();
+		Detail detail = query.getSingleResult();		// no try block, Detail ID handled internally by app
 		session.getTransaction().commit();
 		return detail;
 	}
@@ -27,9 +27,7 @@ public class DetailDAO {
 	public Detail getDetails(int id) {
 		Session session = sessionFactory.getCurrentSession();
 		session.beginTransaction();
-		Query<Detail> query = session.createQuery("FROM Detail det WHERE det.id=:id", Detail.class);
-		query.setParameter("id", id);
-		Detail detail = query.getSingleResult();
+		Detail detail = session.get(Detail.class, id);
 		session.getTransaction().commit();
 		return detail;
 	}
@@ -42,19 +40,5 @@ public class DetailDAO {
 		session.getTransaction().commit();
 		return temp.getId();
 	}
-	
-	
-	//remove Detail object via id/DB PK
-	public void removeDetails(int id) {
-		Session session = sessionFactory.getCurrentSession();
-		session.beginTransaction();
-		Query<Detail> query = session.createQuery("FROM Detail det WHERE det.id=:iddet",Detail.class);
-		query.setParameter("iddet", id);
-		Detail detail = query.getSingleResult();
-		session.remove(detail);
-		session.getTransaction().commit();
-	}
-	
-	
 	
 }

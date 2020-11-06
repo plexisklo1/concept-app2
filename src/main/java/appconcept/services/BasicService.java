@@ -67,12 +67,6 @@ public class BasicService {
 	}
 	
 	
-	public void removeDetails(int id) {
-		detailDao.removeDetails(id);
-	}
-	
-	
-	
 	// TEAM DB access methods
 	//
 	

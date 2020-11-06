@@ -21,10 +21,8 @@ import appconcept.services.BasicService;
 @Controller
 public class WebController {
 
-	
 	@Autowired
 	private BasicService basicService;
-	
 
 	@GetMapping("/employees")												//initial page Emps & Teams
 	public String getAllEmployees(Model model) {
@@ -38,6 +36,10 @@ public class WebController {
 	@GetMapping("/empdetail")												//load Detail for Employee
 	public String details(@RequestParam("empid") int id, Model model) {
 		Employee emp = basicService.getEmployee(id);
+		if (emp==null) {
+			model.addAttribute("error","Employee with id "+id+" not found.");
+			return "invalid-request";
+		}
 		model.addAttribute("employee", emp);
 		Detail detail = basicService.getDetails(emp.getDetail().getId());
 		model.addAttribute("detail", detail);
@@ -51,8 +53,6 @@ public class WebController {
 		model.addAttribute("detail", detail);
 		model.addAttribute("id", emp.getId());
 		model.addAttribute("employee", emp);
-		//model.addAttribute("id", detail.getEmployee().getId());
-		//model.addAttribute("employee", detail.getEmployee());
 		return "detailupd";
 	}
 	
@@ -90,9 +90,8 @@ public class WebController {
 	public String empupdate(@RequestParam("teamid") int teamId, @RequestParam("detailid") int detailId, @Valid @ModelAttribute("employee") Employee employee, BindingResult br, Model model) {
 		if (br.hasErrors()) {
 			if (employee.getId()==0) {										//new employee
-				Employee newEmployee = new Employee();
 				employee.setId(0);
-				model.addAttribute("employee", newEmployee);
+				model.addAttribute("employee", employee);
 				model.addAttribute("detailid", 0);
 				model.addAttribute("teams", basicService.getTeams());
 				return "empedit";
@@ -147,13 +146,11 @@ public class WebController {
 	public String processTeam(@Valid @ModelAttribute("team") Team team, BindingResult br, Model model) {
 		if (br.hasErrors()) {
 				if (team.getId()==0) {										//failed @Valid of a new team addition, returning empty Team with id 0
-					Team newTeam = new Team();
-					newTeam.setId(0);
 					model.addAttribute("team", team);
 					return "teamedit";
 				}
 				else {														//failed @Valid when editing existing team, returning existing team to validate - will cause error response to not be shown
-					model.addAttribute("team", basicService.getTeam(team.getId()));
+					model.addAttribute("team", team);
 					return "teamedit";
 				}
 		}

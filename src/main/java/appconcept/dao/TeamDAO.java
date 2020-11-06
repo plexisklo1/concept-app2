@@ -14,18 +14,16 @@ public class TeamDAO {
 	@Autowired
 	private SessionFactory sessionFactory;
 
-	//get Team from DB via id/DB PK
+	// get Team from DB via id/DB PK
 	public Team getTeam(int id) {
 		Session session = sessionFactory.getCurrentSession();
 		session.beginTransaction();
-		Query<Team> query = session.createQuery("FROM Team team WHERE team.id=:id", Team.class);
-		query.setParameter("id", id);
-		Team team = query.getSingleResult();
+		Team team = session.get(Team.class, id);
 		session.getTransaction().commit();
 		return team;
 	}
-	
-	//get all Team records from DB
+
+	// get all Team records from DB
 	public List<Team> getTeams() {
 		Session session = sessionFactory.getCurrentSession();
 		session.beginTransaction();
@@ -35,7 +33,7 @@ public class TeamDAO {
 		return list;
 	}
 
-	//persist Team
+	// persist Team
 	public Team saveTeam(Team team) {
 		Session session = sessionFactory.getCurrentSession();
 		session.beginTransaction();
@@ -44,13 +42,11 @@ public class TeamDAO {
 		return team;
 	}
 
-	//remove Team
+	// remove Team - unimplemented
 	public void removeTeam(int id) {
 		Session session = sessionFactory.getCurrentSession();
 		session.beginTransaction();
-		Query<Team> query = session.createQuery("FROM Team team WHERE team.id=:idteam", Team.class);
-		query.setParameter("idteam", id);
-		Team team = query.getSingleResult();
+		Team team = session.get(Team.class,id);
 		session.remove(team);
 		session.getTransaction().commit();
 	}
