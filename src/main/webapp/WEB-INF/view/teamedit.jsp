@@ -24,7 +24,7 @@
 				<tr>
 					<td><form:input path="name" value="${team.name}" /></td>
 					<td><form:input path="description" value="${team.description}" /></td>
-					<td><input type="submit" value="Add team" class="btn btn-dark" /></td>
+					<td><input type="submit" value="Confirm" class="btn btn-dark" /></td>
 				</tr>
 				<tr>
 					<td><form:errors path="name" /></td>

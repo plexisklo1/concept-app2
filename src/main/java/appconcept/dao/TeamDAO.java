@@ -1,5 +1,6 @@
 package appconcept.dao;
 
+import java.util.Iterator;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -47,6 +48,13 @@ public class TeamDAO {
 		Session session = sessionFactory.getCurrentSession();
 		session.beginTransaction();
 		Team team = session.get(Team.class,id);
+		Team unassigned = session.get(Team.class, 12);
+		
+		for (Iterator<Employee> iterator = team.getEmployeeList().iterator(); iterator.hasNext();) {
+			Employee emp = iterator.next();
+			emp.setTeam(unassigned);
+			iterator.remove();
+		}
 		session.remove(team);
 		session.getTransaction().commit();
 	}

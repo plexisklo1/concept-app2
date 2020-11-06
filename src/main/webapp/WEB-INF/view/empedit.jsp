@@ -33,7 +33,7 @@
 									${teamsid.id==id ? "selected" : ""}>${teamsid.name}</option>
 							</c:forEach>
 					</select></td>
-					<td><input type="submit" value="Send" class="btn btn-dark" />
+					<td><input type="submit" value="Confirm" class="btn btn-dark" />
 				</tr>
 				<tr>
 					<td><form:errors path="*" /></td>

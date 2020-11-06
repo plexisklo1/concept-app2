@@ -28,8 +28,7 @@
 				</c:url>
 				<td>${detail.email}</td>
 				<td>${detail.address}</td>
-				<td><a href="${detailupd}" class="btn btn-dark">Update
-						details</a></td>
+				<td><a href="${detailupd}" class="btn btn-dark">Set	details</a></td>
 
 			</tr>
 		</table>

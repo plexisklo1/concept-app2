@@ -54,25 +54,27 @@
 				<th>#</th>
 				<th>Name</th>
 				<th>Description</th>
-				<th></th>
+				<th>Action</th>
 			</tr>
 		</thead>
 			<c:forEach var="team" items="${teams}">
 				<c:url var="teamedit" value="/teamedit">
 					<c:param name="teamid" value="${team.id}" />
 				</c:url>
-
+				<c:url var="teamRemoveURL" value="/removeTeam">
+					<c:param name="teamId" value="${team.id}"/>
+				</c:url>
 				<tr>
 					<td>${team.id}</td>
 					<td>${team.name}</td>
 					<td>${team.description}</td>
-					<td><a href="${teamedit}" class="btn btn-dark">Update</a></td>
+					<td><a href="${teamedit}" class="btn btn-dark">Update</a> <a href="${teamRemoveURL}" class="btn btn-warning" onclick="if(!(confirm('Remove team?\nTeam members will be Unassigned.'))) return false">Remove</a></td>
 				</tr>
 			</c:forEach>
 		</table>
 		<br> <a href="${pageContext.request.contextPath}/teamcreate" class="btn btn-secondary">New
 			team</a>
-	</div>
+	</div><br>
 
 </body>
 </html>
