@@ -27,7 +27,7 @@ public class CustomExceptionHandler {
 	}
 	
 	
-	class GeneralError {			//just an inner class example, could be handled by separate standalone Java class
+	class GeneralError {			//inner class example, could be handled by separate standalone Java class
 		private int status;
 		private String message;
 		private long timeStamp;

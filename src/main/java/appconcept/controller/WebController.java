@@ -162,12 +162,17 @@ public class WebController {
 	@RequestMapping("/removeTeam")
 	public String removeTeam(@RequestParam("teamId") int id, Model model) {
 		if (id==12) {
-			model.addAttribute("error", "Team Unassigned must not be removed.");
+			model.addAttribute("error", "Default team \"Unassigned\" can not be removed.");
 			return "invalid-request";
 		}
 		basicService.removeTeam(id);
 		return "redirect:/employees";
 		
+	}
+	
+	@RequestMapping("/denied")
+	public String denied() {
+		return "redirect:/employees";
 	}
 	
 }

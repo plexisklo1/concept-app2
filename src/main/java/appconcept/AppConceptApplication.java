@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
@@ -24,6 +25,7 @@ import appconcept.dao.Employee;
 import appconcept.dao.Team;
 
 @SpringBootApplication(scanBasePackages = "appconcept")
+@EnableAspectJAutoProxy
 @PropertySource("classpath:db.prop")
 public class AppConceptApplication implements WebMvcConfigurer {
 
@@ -65,7 +67,7 @@ public class AppConceptApplication implements WebMvcConfigurer {
 	}
 	
 	@Bean
-	public LocalSessionFactoryBean sessionFActory() {
+	public LocalSessionFactoryBean sessionFactory() {
 		LocalSessionFactoryBean factory = new LocalSessionFactoryBean();
 		factory.setDataSource(dataSource());
 		Properties props= new Properties();

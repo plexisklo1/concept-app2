@@ -1,5 +1,7 @@
 <%@ page isELIgnored="false"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -38,12 +40,12 @@
 					</c:url>
 					<td><a href="${empdetail}" class="btn btn-info">Details</a> 
 					<a href="${empedit}" class="btn btn-dark">Update</a> 
-					<a href="${empremove}" class="btn btn-warning" onclick="if(!(confirm('Delete subject?'))) return false">Remove</a></td>
+					<security:authorize access="hasRole('ADMIN')"><a href="${empremove}" class="btn btn-warning" onclick="if(!(confirm('Delete subject?'))) return false">Remove</a></security:authorize></td>
 				</tr>
 			</c:forEach>
 		</table>
-		<br> <a
-			href="${pageContext.request.contextPath}/addemployee" class="btn btn-secondary">New	employee</a> <br> <br>
+		<br> <security:authorize access='hasAnyRole("EXEC","ADMIN")'><a
+			href="${pageContext.request.contextPath}/addemployee" class="btn btn-secondary">New	employee</a></security:authorize> <br> <br>
 		<hr>
 		<br>
 		<br>
@@ -54,7 +56,7 @@
 				<th>#</th>
 				<th>Name</th>
 				<th>Description</th>
-				<th>Action</th>
+				<security:authorize access='hasAnyRole("EXEC","ADMIN")'><th>Action</th></security:authorize>
 			</tr>
 		</thead>
 			<c:forEach var="team" items="${teams}">
@@ -68,15 +70,18 @@
 					<td>${team.id}</td>
 					<td>${team.name}</td>
 					<td>${team.description}</td>
-					<td><a href="${teamedit}" class="btn btn-dark">Update</a> <a href="${teamRemoveURL}" class="btn btn-warning" onclick="if(!(confirm('Remove team?\nTeam members will be Unassigned.'))) return false">Remove</a></td>
+					<security:authorize access='hasAnyRole("EXEC","ADMIN")'><td><a href="${teamedit}" class="btn btn-dark">Update</a> <security:authorize access="hasRole('ADMIN')"><a href="${teamRemoveURL}" class="btn btn-warning" 
+					onclick="if(!(confirm('Remove team?\nTeam members will be Unassigned.'))) {return false;}">Remove</a></security:authorize></td></security:authorize>
 				</tr>
 			</c:forEach>
 		</table>
-		<br> <a href="${pageContext.request.contextPath}/teamcreate" class="btn btn-secondary">New
-			team</a>
+		<br> <security:authorize access='hasAnyRole("EXEC","ADMIN")'><a href="${pageContext.request.contextPath}/teamcreate" class="btn btn-secondary">New
+			team</a></security:authorize>
 	</div><br>
+	<p>Logged in as: <security:authentication property="principal.username" /></p>
+<form:form action="${pageContext.request.contextPath}/login" method="POST">
+	<input type="submit" value="Logout"/>
+</form:form>
 
 </body>
 </html>
-
-
