@@ -52,10 +52,6 @@ public class Team {
 		this.description = description;
 		this.employeeList = employeeList;
 	}
-
-	
-	
-	
 	
 	public int getId() {
 		return id;
@@ -92,6 +88,5 @@ public class Team {
 	@Override
 	public String toString() {
 		return "Name: "+name+", Description: "+description;
-	}
-	
+	}	
 }

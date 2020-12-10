@@ -14,6 +14,7 @@ import appconcept.dao.Team;
 @Component
 public class AppAspect {
 	
+	//Pointcut for catching object persisting, TBD
 	@Pointcut("execution(* save*(..))")
 	public void newOrUpdatePointcut() {}
 	
@@ -28,7 +29,7 @@ public class AppAspect {
 		}
 	}
 	
-	
+	//Pointcut for catching object deletion, TBD
 	@AfterReturning(pointcut="execution(* delete*(..))", returning = "result")
 	public void logRemoval(JoinPoint jp, Object result) {
 		

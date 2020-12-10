@@ -23,16 +23,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
 	@Autowired
 	private DataSource dataSource;
 	
+	//DB authentication for Spring Security
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.jdbcAuthentication().dataSource(dataSource);
 	}
 
+	//Spring Security & request security handling
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 	 	http.authorizeRequests()  
-	 	.antMatchers("/css/**").permitAll()				//enable access to css without authentication
-	 	.antMatchers("/api/**").permitAll()
+	 	.antMatchers("/css/**").permitAll()				//enable access to CSS without authentication
+	 	.antMatchers("/api/**").permitAll()				//access to API nodes without authentication
 	 	.antMatchers("/teamcreate").hasAnyRole("ADMIN","EXEC")
 	 	.antMatchers("/addEmployee").hasAnyRole("ADMIN","EXEC")
         .anyRequest().authenticated()                   
@@ -44,17 +46,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
 	 	.and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
 	 	.permitAll()
 	 	.and()
-	 	.exceptionHandling().accessDeniedPage("/denied");
-	 	
-	}
-	
-	
-	
-	@Override
-	public void configure(WebSecurity web) throws Exception {
-		web.ignoring().antMatchers("/api");
+	 	.exceptionHandling().accessDeniedPage("/denied");	 	
 	}
 
+	//CSS handling for JSP
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 			registry.addResourceHandler("/css/**").addResourceLocations("/css/");

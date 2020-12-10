@@ -8,26 +8,29 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class CustomExceptionHandler {
 
-	@ExceptionHandler			//Employee not found for retrieval or update
+	//Employee not found for retrieval or update
+	@ExceptionHandler			
 	ResponseEntity<EmployeeErrorResponse> handleException(EmployeeNotFoundException exc) {
 		EmployeeErrorResponse response = new EmployeeErrorResponse(HttpStatus.NOT_FOUND.value(), exc.getMessage(),System.currentTimeMillis());
 		return new ResponseEntity<>(response,HttpStatus.NOT_FOUND);
 	}
 	
-	@ExceptionHandler			//Team not found for retrieval or update
+	//Team not found for retrieval or update
+	@ExceptionHandler			
 	public ResponseEntity<TeamErrorResponse> handleException(TeamNotFoundException exc) {
 		TeamErrorResponse response = new TeamErrorResponse(HttpStatus.NOT_FOUND.value(),exc.getMessage(),System.currentTimeMillis());
 		return new ResponseEntity<>(response,HttpStatus.NOT_FOUND);
 	}
 	
-	@ExceptionHandler			//catch-all general exception
+	//catch-all general exception
+	@ExceptionHandler
 	public ResponseEntity<GeneralError> handleException(Exception exc) {
 		GeneralError response = new GeneralError(HttpStatus.BAD_REQUEST.value(),exc.getMessage(), System.currentTimeMillis());
 		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 	}
 	
-	
-	class GeneralError {			//inner class example, could be handled by separate standalone Java class
+	//inner class example, could be handled by separate standalone Java class
+	class GeneralError {
 		private int status;
 		private String message;
 		private long timeStamp;

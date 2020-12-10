@@ -29,14 +29,13 @@ import appconcept.dao.Team;
 @PropertySource("classpath:db.prop")
 public class AppConceptApplication implements WebMvcConfigurer {
 
-	
 	@Autowired
 	private Environment env;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(AppConceptApplication.class, args);
 	}
-		
+	
 	@Bean
 	protected ViewResolver viewResolver() {
 		InternalResourceViewResolver view = new InternalResourceViewResolver();
@@ -45,6 +44,7 @@ public class AppConceptApplication implements WebMvcConfigurer {
 		return view;
 	}
 	
+	//DB handling
 	@Bean
 	public DataSource dataSource() {
 		ComboPooledDataSource source = new ComboPooledDataSource();
@@ -62,10 +62,10 @@ public class AppConceptApplication implements WebMvcConfigurer {
 		source.setMaxIdleTime(Integer.parseInt(env.getProperty("hibernate.connection.maxIdleTime")));
 		source.setMinPoolSize(Integer.parseInt(env.getProperty("hibernate.connection.minPoolSize")));
 		source.setMaxPoolSize(Integer.parseInt(env.getProperty("hibernate.connection.maxPoolSize")));
-		System.out.println("data source created");
 		return source;
 	}
 	
+	//DB handling
 	@Bean
 	public LocalSessionFactoryBean sessionFactory() {
 		LocalSessionFactoryBean factory = new LocalSessionFactoryBean();
@@ -74,11 +74,10 @@ public class AppConceptApplication implements WebMvcConfigurer {
 		props.setProperty("hibernate.show_sql", "true");
 		factory.setHibernateProperties(props);
 		factory.setAnnotatedClasses(Employee.class,Team.class,Detail.class);
-		
-		System.out.println("session factory created");
 		return factory;
 	}
 
+	//CSS handling for JSP
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		registry.addResourceHandler("/css/**").addResourceLocations("/css/");

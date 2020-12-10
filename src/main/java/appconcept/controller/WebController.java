@@ -24,7 +24,8 @@ public class WebController {
 	@Autowired
 	private BasicService basicService;
 
-	@GetMapping("/employees")												//initial page Emps & Teams
+	//initial page Emps & Teams
+	@GetMapping("/employees")
 	public String getAllEmployees(Model model) {
 		List<Employee> list = basicService.getEmployees();
 		model.addAttribute("employees", list);
@@ -33,7 +34,8 @@ public class WebController {
 		return "empindex";
 	}
 
-	@GetMapping("/empdetail")												//load Detail for Employee
+	//load Detail for Employee
+	@GetMapping("/empdetail")
 	public String details(@RequestParam("empid") int id, Model model) {
 		Employee emp = basicService.getEmployee(id);
 		if (emp==null) {
@@ -46,7 +48,8 @@ public class WebController {
 		return "empdetail";
 	}
 	
-	@GetMapping("/detailupd")												//edit Detail - initialization (adding model attributes)
+	//edit Detail - initialization (adding model attributes)
+	@GetMapping("/detailupd")
 	public String detailsUpdate(@RequestParam("detailid") int id, Model model) {
 		Detail detail = basicService.getDetails(id);
 		Employee emp = detail.getEmployee();
@@ -56,15 +59,16 @@ public class WebController {
 		return "detailupd";
 	}
 	
-	
-	@RequestMapping("/updatedet")											//processing edited Detail 
+	//processing edited Detail
+	@RequestMapping("/updatedet") 
 	public String detailsUpdateJob(@ModelAttribute("detail") Detail detail, @RequestParam("empid") int id) {
 		detail.setEmployee(basicService.getEmployee(id));
 		basicService.saveDetails(detail);
 		return "redirect:/employees";
 	}
 	
-	@GetMapping("/empedit")													//edit Employee - initialization
+	//edit Employee - initialization
+	@GetMapping("/empedit")
 	public String editEmployee(@RequestParam("empid") int id, Model model) {
 		Employee employee = basicService.getEmployee(id);
 		model.addAttribute("employee", employee);
@@ -75,7 +79,8 @@ public class WebController {
 		return "empedit";
 	}
 	
-	@GetMapping("/addemployee")												//NEW Employee - initialization
+	//new Employee - initialization
+	@GetMapping("/addemployee")
 	public String addemployee(Model model) {
 		Employee employee = new Employee();
 		employee.setId(0);													//setting up "PK" for Employee before persisting via saveOrUpdate();
@@ -85,8 +90,8 @@ public class WebController {
 		return "empedit";
 	}
 	
-	
-	@RequestMapping("empupdate")											//processing edited Employee - update if existing | initialize object & set Team before persisting
+	//processing edited Employee - update if existing | initialize object & set Team before persisting
+	@RequestMapping("empupdate")
 	public String empupdate(@RequestParam("teamid") int teamId, @RequestParam("detailid") int detailId, @Valid @ModelAttribute("employee") Employee employee, BindingResult br, Model model) {
 		if (br.hasErrors()) {
 			if (employee.getId()==0) {										//new employee
@@ -107,7 +112,8 @@ public class WebController {
 			}
 		}
 		
-		if (detailId==0) {													//if no Detail assigned to Employee - persist Employee and move to definition of new Detail
+		//if no Detail assigned to Employee - persist Employee and move to definition of new Detail
+		if (detailId==0) {
 			employee.setTeam(basicService.getTeam(teamId));
 			int empId=basicService.saveEmployee(employee);
 			Detail detail = new Detail();
@@ -121,14 +127,15 @@ public class WebController {
 		return "redirect:/employees";
 	}
 	
-	
-	@GetMapping("/empremove")												//remove Employee, cascade.all for corresponding Detail 
+	//remove Employee, cascade.all for corresponding Detail
+	@GetMapping("/empremove")
 	public String removeEmployee(@RequestParam("empid") int id, Model model) {
 		basicService.removeEmployee(id);
 		return "redirect:/employees";
 	}
 
-	@RequestMapping("/teamcreate")											//NEW Team - initialization
+	//new Team - initialization
+	@RequestMapping("/teamcreate")
 	public String createNewTeam(Model model) {
 		Team team = new Team();
 		team.setId(0);
@@ -136,13 +143,15 @@ public class WebController {
 		return "teamedit";
 	}
 	
-	@RequestMapping("/teamedit")											//Team - initialization
+	//Team - initialization
+	@RequestMapping("/teamedit")
 	public String editCreatedTeam(@RequestParam("teamid") int id, Model model) {
 		model.addAttribute("team", basicService.getTeam(id));
 		return "teamedit";
 	}
 	
-	@RequestMapping("/processteam")											//processing edited Team
+	//processing edited Team
+	@RequestMapping("/processteam")
 	public String processTeam(@Valid @ModelAttribute("team") Team team, BindingResult br, Model model) {
 		if (br.hasErrors()) {
 				if (team.getId()==0) {										//failed @Valid of a new team addition, returning empty Team with id 0
@@ -166,10 +175,10 @@ public class WebController {
 			return "invalid-request";
 		}
 		basicService.removeTeam(id);
-		return "redirect:/employees";
-		
+		return "redirect:/employees";	
 	}
 	
+	//no permission for user account to access this page - redirect to title page
 	@RequestMapping("/denied")
 	public String denied() {
 		return "redirect:/employees";

@@ -43,7 +43,6 @@ public class Detail {
 		this.employee = employee;
 	}
 
-	
 	public int getId() {
 		return id;
 	}
@@ -101,8 +100,5 @@ public class Detail {
 		if (id != other.id)
 			return false;
 		return true;
-	}
-	
-	
-	
+	}	
 }

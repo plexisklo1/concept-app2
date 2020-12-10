@@ -28,11 +28,13 @@ public class RestControllerOwn {
 	@Autowired
 	private BasicService basicService;
 	
+	//retrieving of existing teams via HTTP GET
 	@GetMapping("/teams")
 	public List<Team> getTeamsRest() {
 		return basicService.getTeams();
 	}
 	
+	//retrieving of an existing team via HTTP GET
 	@GetMapping("/teams/{idTeam}")
 	public Team getTeamRest(@PathVariable("idTeam") int id) {
 		Team team = basicService.getTeam(id);
@@ -42,6 +44,7 @@ public class RestControllerOwn {
 		return team;
 	}
 	
+	//inserting of a new team via HTTP POST
 	@PostMapping("/teams")
 	public Team addTeam(@Valid @RequestBody Team team, BindingResult br) {
 		if (br.hasErrors()) {
@@ -52,6 +55,7 @@ public class RestControllerOwn {
 		return team;
 	}
 	
+	//editing of an existing team via HTTP PUT
 	@PutMapping("/teams")
 	public Team updateTeamRest(@Valid @RequestBody Team team, BindingResult br) {
 		if (br.hasErrors()) {
@@ -63,12 +67,13 @@ public class RestControllerOwn {
 	
 //	------------- Employee REST
 	
-	
+	//retrieving of existing employees via HTTP GET
 	@GetMapping("/employees")
 	public List<Employee> getEmployeesRest() {
 		return basicService.getEmployees();
 	}
 	
+	//retrieving of an existing employee via HTTP GET
 	@GetMapping("/employees/{empId}")
 	public Employee getEmployeeRest(@PathVariable("empId") int id) {
 		Employee emp = basicService.getEmployee(id);
@@ -78,6 +83,7 @@ public class RestControllerOwn {
 		return basicService.getEmployee(id);
 	}
 	
+	//editing of an existing employee via HTTP PUT
 	@PutMapping("/employees")
 	public Employee updateEmployeeRest(@Valid @RequestBody Employee emp, BindingResult br) {
 		if (br.hasErrors()) {
@@ -87,6 +93,7 @@ public class RestControllerOwn {
 		return basicService.getEmployee(emp.getId());
 	}
 	
+	//inserting of a new employee via HTTP POST
 	@PostMapping("/employees")					//has to include team_id FK, Detail
 	public Employee addNewEmployeeRest(@Valid @RequestBody Employee emp, BindingResult br) {
 		if (br.hasErrors()) {
