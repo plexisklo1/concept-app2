@@ -10,8 +10,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.User.UserBuilder;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -26,13 +25,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
 	
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//		UserBuilder users = User.withDefaultPasswordEncoder();
-//		
-//		auth.inMemoryAuthentication().
-//			withUser(users.username("user").password("nbusr123").roles("USER")).
-//			withUser(users.username("exec").password("nbusr123").roles("EXEC")).
-//			withUser(users.username("admin").password("nbusr123").roles("ADMIN","EXEC","EMPLOYEE"));
-		
 		auth.jdbcAuthentication().dataSource(dataSource);
 	}
 
@@ -53,6 +45,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
 	 	.permitAll()
 	 	.and()
 	 	.exceptionHandling().accessDeniedPage("/denied");
+	 	
 	}
 	
 	
